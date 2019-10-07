@@ -1,5 +1,5 @@
-## Under Coonstruction
-simple to set up
+## Cloudtrail Monitor
+simple to set up with JPro
 runs in  browser so internal deployment easy
 
 ## Summary
