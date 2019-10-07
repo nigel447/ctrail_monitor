@@ -1,0 +1,5 @@
+{
+  "symKePsswd" : "some_key_psswd",
+  "keyStorePasswd" : "some_key_store_psswd",
+  "keyStore" : "some_hex_encoded_paraphrase_protected_key_store"
+}

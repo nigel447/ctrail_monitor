@@ -1,0 +1,90 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "http://sandec.bintray.com/repo"
+        }
+    }
+
+    dependencies {
+        classpath 'com.sandec.jpro:jpro-plugin-gradle:2019.1.2'
+        classpath 'org.openjfx:javafx-plugin:0.0.8'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+
+
+}
+
+apply plugin: 'org.openjfx.javafxplugin'
+
+group 'app-trail'
+version '1'
+sourceCompatibility = 1.8
+mainClassName = 'com.aws.security.Entrypoint'
+
+ext {
+    awsSdkVersion = '1.11.638'
+    junit5Version = '5.5.2'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+//    flatDir {
+//        dirs 'lib'
+//    }
+}
+
+apply from: 'jpro.gradle'
+
+// jpro onlly j11 => java 11 need open jfx plugin
+javafx {
+    version = "11"
+    // https://openjfx.io/javadoc/11/
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.graphics' ]
+}
+
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    /**
+     * https://www.bountysource.com/issues/68946653-does-this-library-supports-java-11
+     */
+    implementation "no.tornado:tornadofx:2.0.0-SNAPSHOT"
+    // java 11 snapshot now local jar as repo is not widely known
+    //implementation name: "tornadofx-2.0.0"
+    implementation 'log4j:log4j:1.2.17'
+    implementation 'commons-logging:commons-logging:1.2'
+
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9'
+    implementation "com.amazonaws:aws-java-sdk-cloudtrail:$awsSdkVersion"
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.62'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
+
+    testImplementation "org.junit.jupiter:junit-jupiter:$junit5Version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5Version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
+
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
